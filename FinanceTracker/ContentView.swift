@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var months: [Month] = [Month(monthYear: getCurrentMonthYear(), transactions: [
+    @State private var months: [Month] = [Month(monthYear: MonthYear(month: 8, year: 2024), transactions: [
         Transaction(type: .income, amount: 100.0, category: "зп", date: Date(), isRecurring: false)
     ])]
     @State private var selectedMonthIndex = 0
@@ -77,7 +77,7 @@ struct ContentView: View {
                         showingExpenseDetails.toggle()
                     }
                     .sheet(isPresented: $showingExpenseDetails) {
-                        ExpenseDetailsView(transactions: .constant(currentMonth.transactions.filter { $0.type == .expense }))
+                        ExpenseDetailsView(transactions: $months[selectedMonthIndex].transactions)
                     }
                 }
                 .padding()
@@ -117,7 +117,7 @@ struct ContentView: View {
                     }
                 }
                 
-                if months.count > 1 {
+                if months.count > 1 && selectedMonthIndex == months.count-1 {
                     Button(action: {
                         showingDeleteConfirmation.toggle()
                     }) {
@@ -150,22 +150,23 @@ struct ContentView: View {
                         Button(action: {
                             selectedMonthIndex = index
                         }) {
-                            Text(months[index].monthYear)
+                            Text(String(months[index].monthYear.month) + " " + String(months[index].monthYear.year))
                                 .padding()
                                 .background(selectedMonthIndex == index ? Color.blue : Color.gray.opacity(0.2))
                                 .foregroundColor(selectedMonthIndex == index ? .white : .black)
                                 .cornerRadius(10)
                         }
                     }
+
                     
                     Button(action: {
                         showingAddMonth.toggle()
                     }) {
-                        Text("+ Добавить месяц")
+                        Text("+")
                             .padding()
-                            .background(Color.green)
+                            .background(Color.blue)
                             .foregroundColor(.white)
-                            .cornerRadius(10)
+                            .cornerRadius(8)
                     }
                 }
                 .padding()
@@ -173,13 +174,18 @@ struct ContentView: View {
         }
         .navigationTitle("Финансовый обзор")
         .sheet(isPresented: $showingAddMonth) {
-            AddMonthView(onAddMonth: { newMonth in
-                months.append(newMonth)
-                selectedMonthIndex = months.count - 1
-                // Обновляем все месяцы с повторяющимися транзакциями
-                addRecurringTransactions(to: &months, from: recurringTransactions)
-                updateAllMonthlyBalances()
-            }, allRecurringTransactions: recurringTransactions)
+            if let lastMonthYear = months.last?.monthYear {
+                
+                AddMonthView(
+                    lastMonthYear: lastMonthYear,
+                    onAddMonth: { newMonthYear in
+                        let newMonth = Month(monthYear: newMonthYear, transactions: [])
+                        months.append(newMonth)
+                        // Обновляем все месяцы с повторяющимися транзакциями
+                        addRecurringTransactions(to: &months, from: recurringTransactions)
+                        updateAllMonthlyBalances()
+                }, allRecurringTransactions: recurringTransactions)
+            }
         }
         .onAppear {
             updateAllMonthlyBalances()

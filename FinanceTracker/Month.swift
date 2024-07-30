@@ -1,7 +1,13 @@
 import Foundation
 
+struct MonthYear: Identifiable, Equatable {
+    var id = UUID()
+    var month: Int
+    var year: Int
+}
+
 struct Month: Identifiable {
-    var monthYear: String
+    var monthYear: MonthYear
     var transactions: [Transaction] = []
     
     var id = UUID()
@@ -13,10 +19,10 @@ struct Month: Identifiable {
         return totalIncome - totalExpense + previousMonthBalance
     }
     
-    init(monthYear: String, transactions: [Transaction] = []) {
-        self.monthYear = monthYear
-        self.transactions = transactions
-    }
+//    init(monthYear: String, transactions: [Transaction] = []) {
+//        self.monthYear = monthYear
+//        self.transactions = transactions
+//    }
     
     mutating func addRecurringTransactions(from recurringTransactions: [Transaction]) {
         let recurringTransactions = transactions.filter { $0.isRecurring }
