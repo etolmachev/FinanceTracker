@@ -25,8 +25,15 @@ struct AddTransactionView: View {
             }
             .navigationTitle("Добавить транзакцию")
             .navigationBarItems(trailing: Button("Сохранить") {
+                print(Swift.type(of: amount))
+
                 if let amount = Double(amount) {
-                    let transaction = Transaction(type: type, amount: amount, category: category, date: date, isRecurring: isRecurring)
+                    let transaction = Transaction(
+                        type: type,
+                        amount: amount,
+                        category: category,
+                        date: date,
+                        isRecurring: isRecurring)
                     onSave?(transaction)
                     presentationMode.wrappedValue.dismiss()
                 }

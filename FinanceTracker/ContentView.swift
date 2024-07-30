@@ -55,7 +55,7 @@ struct ContentView: View {
                         showingIncomeDetails.toggle()
                     }
                     .sheet(isPresented: $showingIncomeDetails) {
-                        IncomeDetailsView(transactions: .constant(currentMonth.transactions.filter { $0.type == .income }))
+                        IncomeDetailsView(transactions: $months[selectedMonthIndex].transactions)
                     }
                     
                     Spacer()
