@@ -87,15 +87,27 @@ struct ContentView: View {
                 .padding()
 
                 VStack(alignment: .leading) {
-                    Text("Остаток на начало месяца")
-                        .font(.headline)
-                    Text("\(previousMonthBalance, specifier: "%.2f")")
-                        .font(.title)
+                    HStack{
+                        VStack(alignment: .leading) {
+                            Text("Остаток на начало месяца")
+                                .font(.headline)
+                            Text("\(previousMonthBalance, specifier: "%.2f")")
+                                .font(.title)
+                        }
+                        Spacer()
+                    }
+
                     
-                    Text("Остаток в этом месяце")
-                        .font(.headline)
-                    Text("\(monthlyBalance, specifier: "%.2f")")
-                        .font(.largeTitle)
+                    HStack{
+                        VStack(alignment: .leading) {
+                            Text("Остаток в этом месяце")
+                                .font(.headline)
+                            Text("\(monthlyBalance, specifier: "%.2f")")
+                                .font(.largeTitle)
+                        }
+                        Spacer()
+                    }
+                    
                 }
                 .padding()
                 
@@ -146,6 +158,7 @@ struct ContentView: View {
                     }
                 }
             }
+            .navigationTitle("Финансовый обзор")
             .padding(.bottom, 60) // Add padding to avoid overlap with the month scroller
             
             // Horizontal Scroll for Months
@@ -155,7 +168,7 @@ struct ContentView: View {
                         Button(action: {
                             selectedMonthIndex = index
                         }) {
-                            Text(String(months[index].monthYear.month) + " " + String(months[index].monthYear.year))
+                            Text(String(months[index].monthYear.month) + "." + String(months[index].monthYear.year))
                                 .padding()
                                 .background(selectedMonthIndex == index ? Color.blue : Color.gray.opacity(0.2))
                                 .foregroundColor(selectedMonthIndex == index ? .white : .black)
@@ -178,7 +191,6 @@ struct ContentView: View {
                 .padding()
             }
         }
-        .navigationTitle("Финансовый обзор")
         .sheet(isPresented: $showingAddMonth) {
             if let lastMonthYear = months.last?.monthYear {
                 
