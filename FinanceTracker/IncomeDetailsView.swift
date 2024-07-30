@@ -7,25 +7,28 @@ struct IncomeDetailsView: View {
     @State private var selectedTransactionIndex: Int?
 
     var body: some View {
-        List {
-            ForEach(transactions.filter { $0.type == .income }) { transaction in
-                HStack {
-                    Text(transaction.category)
-                    Spacer()
-                    Text("\(transaction.amount, specifier: "%.2f")")
-                }
-                .onTapGesture {
-                    selectedTransaction = transaction
-                    selectedTransactionIndex = transactions.firstIndex(where: { $0.id == transaction.id })
-                    showingEditTransaction = true
+        NavigationView {
+            
+            List {
+                ForEach(transactions.filter { $0.type == .income }) { transaction in
+                    HStack {
+                        Text(transaction.category)
+                        Spacer()
+                        Text("\(transaction.amount, specifier: "%.2f")")
+                    }
+                    .onTapGesture {
+                        selectedTransaction = transaction
+                        selectedTransactionIndex = transactions.firstIndex(where: { $0.id == transaction.id })
+                        showingEditTransaction = true
+                    }
                 }
             }
-        }
-        .navigationTitle("Доходы")
-        .sheet(isPresented: $showingEditTransaction) {
-            if let transaction = selectedTransaction, let index = selectedTransactionIndex {
-                EditTransactionView(transaction: transaction) { updatedTransaction in
-                    transactions[index] = updatedTransaction
+            .navigationTitle("Доходы")
+            .sheet(isPresented: $showingEditTransaction) {
+                if let transaction = selectedTransaction, let index = selectedTransactionIndex {
+                    EditTransactionView(transaction: transaction) { updatedTransaction in
+                        transactions[index] = updatedTransaction
+                    }
                 }
             }
         }

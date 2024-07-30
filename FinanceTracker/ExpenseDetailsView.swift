@@ -8,7 +8,7 @@ struct ExpenseDetailsView: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(transactions) { transaction in
+                ForEach(transactions.filter {$0.type == .expense}) { transaction in
                     HStack {
                         Text(transaction.category)
                         Spacer()
