@@ -9,13 +9,18 @@
 /* Begin PBXBuildFile section */
 		E85DFF502C57BD6800EE4D63 /* FinanceTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85DFF4F2C57BD6800EE4D63 /* FinanceTrackerApp.swift */; };
 		E85DFF522C57BD6800EE4D63 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85DFF512C57BD6800EE4D63 /* ContentView.swift */; };
-		E85DFF542C57BD6B00EE4D63 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E85DFF532C57BD6B00EE4D63 /* Assets.xcassets */; };
-		E85DFF572C57BD6B00EE4D63 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E85DFF562C57BD6B00EE4D63 /* Preview Assets.xcassets */; };
-		E85DFF592C57BD6B00EE4D63 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85DFF582C57BD6B00EE4D63 /* Persistence.swift */; };
-		E85DFF5C2C57BD6B00EE4D63 /* FinanceTracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E85DFF5A2C57BD6B00EE4D63 /* FinanceTracker.xcdatamodeld */; };
 		E85DFF662C57BD6B00EE4D63 /* FinanceTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85DFF652C57BD6B00EE4D63 /* FinanceTrackerTests.swift */; };
 		E85DFF702C57BD6B00EE4D63 /* FinanceTrackerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85DFF6F2C57BD6B00EE4D63 /* FinanceTrackerUITests.swift */; };
 		E85DFF722C57BD6B00EE4D63 /* FinanceTrackerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85DFF712C57BD6B00EE4D63 /* FinanceTrackerUITestsLaunchTests.swift */; };
+		E85DFF852C57BE7500EE4D63 /* AddTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85DFF842C57BE7500EE4D63 /* AddTransactionView.swift */; };
+		E8BEE5942C57D60800589BDF /* IncomeDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BEE5932C57D60800589BDF /* IncomeDetailsView.swift */; };
+		E8BEE5962C57D61500589BDF /* ExpenseDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BEE5952C57D61500589BDF /* ExpenseDetailsView.swift */; };
+		E8BEE59A2C57DB1E00589BDF /* AddMonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BEE5992C57DB1E00589BDF /* AddMonthView.swift */; };
+		E8BEE59C2C57E2F900589BDF /* EditTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BEE59B2C57E2F900589BDF /* EditTransactionView.swift */; };
+		E8BEE5C52C59088900589BDF /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BEE5C22C59088900589BDF /* Asset.swift */; };
+		E8BEE5C62C59088900589BDF /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BEE5C32C59088900589BDF /* Transaction.swift */; };
+		E8BEE5C72C59088900589BDF /* Loan.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BEE5C42C59088900589BDF /* Loan.swift */; };
+		E8BEE5C92C5908CB00589BDF /* Month.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BEE5C82C5908CB00589BDF /* Month.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,13 +46,21 @@
 		E85DFF512C57BD6800EE4D63 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		E85DFF532C57BD6B00EE4D63 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E85DFF562C57BD6B00EE4D63 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		E85DFF582C57BD6B00EE4D63 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		E85DFF5B2C57BD6B00EE4D63 /* FinanceTracker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FinanceTracker.xcdatamodel; sourceTree = "<group>"; };
 		E85DFF612C57BD6B00EE4D63 /* FinanceTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FinanceTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E85DFF652C57BD6B00EE4D63 /* FinanceTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceTrackerTests.swift; sourceTree = "<group>"; };
 		E85DFF6B2C57BD6B00EE4D63 /* FinanceTrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FinanceTrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E85DFF6F2C57BD6B00EE4D63 /* FinanceTrackerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceTrackerUITests.swift; sourceTree = "<group>"; };
 		E85DFF712C57BD6B00EE4D63 /* FinanceTrackerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceTrackerUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		E85DFF842C57BE7500EE4D63 /* AddTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTransactionView.swift; sourceTree = "<group>"; };
+		E8BEE5932C57D60800589BDF /* IncomeDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeDetailsView.swift; sourceTree = "<group>"; };
+		E8BEE5952C57D61500589BDF /* ExpenseDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseDetailsView.swift; sourceTree = "<group>"; };
+		E8BEE5992C57DB1E00589BDF /* AddMonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMonthView.swift; sourceTree = "<group>"; };
+		E8BEE59B2C57E2F900589BDF /* EditTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTransactionView.swift; sourceTree = "<group>"; };
+		E8BEE5C22C59088900589BDF /* Asset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
+		E8BEE5C32C59088900589BDF /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		E8BEE5C42C59088900589BDF /* Loan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loan.swift; sourceTree = "<group>"; };
+		E8BEE5C82C5908CB00589BDF /* Month.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Month.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,12 +111,20 @@
 		E85DFF4E2C57BD6800EE4D63 /* FinanceTracker */ = {
 			isa = PBXGroup;
 			children = (
+				E8BEE5C82C5908CB00589BDF /* Month.swift */,
+				E8BEE5C22C59088900589BDF /* Asset.swift */,
+				E8BEE5C42C59088900589BDF /* Loan.swift */,
+				E8BEE5C32C59088900589BDF /* Transaction.swift */,
 				E85DFF4F2C57BD6800EE4D63 /* FinanceTrackerApp.swift */,
 				E85DFF512C57BD6800EE4D63 /* ContentView.swift */,
 				E85DFF532C57BD6B00EE4D63 /* Assets.xcassets */,
-				E85DFF582C57BD6B00EE4D63 /* Persistence.swift */,
 				E85DFF5A2C57BD6B00EE4D63 /* FinanceTracker.xcdatamodeld */,
 				E85DFF552C57BD6B00EE4D63 /* Preview Content */,
+				E85DFF842C57BE7500EE4D63 /* AddTransactionView.swift */,
+				E8BEE5932C57D60800589BDF /* IncomeDetailsView.swift */,
+				E8BEE5952C57D61500589BDF /* ExpenseDetailsView.swift */,
+				E8BEE5992C57DB1E00589BDF /* AddMonthView.swift */,
+				E8BEE59B2C57E2F900589BDF /* EditTransactionView.swift */,
 			);
 			path = FinanceTracker;
 			sourceTree = "<group>";
@@ -237,8 +258,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E85DFF572C57BD6B00EE4D63 /* Preview Assets.xcassets in Resources */,
-				E85DFF542C57BD6B00EE4D63 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,10 +282,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E85DFF592C57BD6B00EE4D63 /* Persistence.swift in Sources */,
+				E8BEE5C52C59088900589BDF /* Asset.swift in Sources */,
+				E8BEE59C2C57E2F900589BDF /* EditTransactionView.swift in Sources */,
+				E8BEE5962C57D61500589BDF /* ExpenseDetailsView.swift in Sources */,
 				E85DFF522C57BD6800EE4D63 /* ContentView.swift in Sources */,
+				E8BEE5C62C59088900589BDF /* Transaction.swift in Sources */,
 				E85DFF502C57BD6800EE4D63 /* FinanceTrackerApp.swift in Sources */,
-				E85DFF5C2C57BD6B00EE4D63 /* FinanceTracker.xcdatamodeld in Sources */,
+				E8BEE59A2C57DB1E00589BDF /* AddMonthView.swift in Sources */,
+				E8BEE5942C57D60800589BDF /* IncomeDetailsView.swift in Sources */,
+				E8BEE5C72C59088900589BDF /* Loan.swift in Sources */,
+				E85DFF852C57BE7500EE4D63 /* AddTransactionView.swift in Sources */,
+				E8BEE5C92C5908CB00589BDF /* Month.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,7 +381,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -412,10 +438,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
@@ -431,12 +458,14 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"FinanceTracker/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
+				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -444,9 +473,14 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = MEANDI.FinanceTracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,Universal";
+				TVOS_DEPLOYMENT_TARGET = 17.2;
 			};
 			name = Debug;
 		};
@@ -459,12 +493,14 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"FinanceTracker/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
+				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -472,9 +508,14 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = MEANDI.FinanceTracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,Universal";
+				TVOS_DEPLOYMENT_TARGET = 17.2;
 			};
 			name = Release;
 		};
