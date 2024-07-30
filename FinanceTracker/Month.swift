@@ -25,8 +25,14 @@ struct Month: Identifiable {
 //    }
     
     mutating func addRecurringTransactions(from recurringTransactions: [Transaction]) {
-        let recurringTransactions = transactions.filter { $0.isRecurring }
-        self.transactions.append(contentsOf: recurringTransactions)
+        let filteredTransactions = recurringTransactions.filter { $0.isRecurring }
+        print("Транзакций для добавления " + " " + String(recurringTransactions.count))
+        print("Транзакций для добавления filtered " + " " + String(filteredTransactions.count))
+        print("Транзакций до добавления " + " " + String(self.transactions.count))
+        self.transactions.append(contentsOf: filteredTransactions)
+        print("Транзакций после добавления " + " " + String(self.transactions.count))
+        print("\n")
+        
     }
 }
 

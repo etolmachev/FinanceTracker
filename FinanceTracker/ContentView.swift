@@ -47,8 +47,8 @@ struct ContentView: View {
                             .font(.largeTitle)
                             .padding()
                     }
-                    .frame(width: 150, height: 150) // Square size
-                    .background(Color.blue)
+                    .frame(width: 170, height: 150) // Square size
+                    .background(Color.green)
                     .foregroundColor(.white)
                     .cornerRadius(15)
                     .onTapGesture {
@@ -56,6 +56,8 @@ struct ContentView: View {
                     }
                     .sheet(isPresented: $showingIncomeDetails) {
                         IncomeDetailsView(transactions: $months[selectedMonthIndex].transactions)
+                    }.onDisappear(){
+                        updateAllMonthlyBalances()
                     }
                     
                     Spacer()
@@ -69,7 +71,7 @@ struct ContentView: View {
                             .font(.largeTitle)
                             .padding()
                     }
-                    .frame(width: 150, height: 150) // Square size
+                    .frame(width: 170, height: 150) // Square size
                     .background(Color.red)
                     .foregroundColor(.white)
                     .cornerRadius(15)
@@ -78,6 +80,8 @@ struct ContentView: View {
                     }
                     .sheet(isPresented: $showingExpenseDetails) {
                         ExpenseDetailsView(transactions: $months[selectedMonthIndex].transactions)
+                    }.onDisappear(){
+                        updateAllMonthlyBalances()
                     }
                 }
                 .padding()
@@ -112,6 +116,7 @@ struct ContentView: View {
                         // Добавляем транзакцию в список повторяющихся, если это повторяющаяся транзакция
                         if transaction.isRecurring {
                             recurringTransactions.append(transaction)
+                            print("кол-во потор транзакций адейт" + " " + String(recurringTransactions.count))
                         }
                         updateAllMonthlyBalances()
                     }
@@ -157,6 +162,7 @@ struct ContentView: View {
                                 .cornerRadius(10)
                         }
                     }
+                    
 
                     
                     Button(action: {
@@ -182,7 +188,7 @@ struct ContentView: View {
                         let newMonth = Month(monthYear: newMonthYear, transactions: [])
                         months.append(newMonth)
                         // Обновляем все месяцы с повторяющимися транзакциями
-                        addRecurringTransactions(to: &months, from: recurringTransactions)
+                        //addRecurringTransactions(to: &months, from: recurringTransactions)
                         updateAllMonthlyBalances()
                 }, allRecurringTransactions: recurringTransactions)
             }
@@ -203,6 +209,8 @@ struct ContentView: View {
     }
 
     private func updateAllMonthlyBalances() {
+        addRecurringTransactions(to: &months, from: recurringTransactions)
+        recurringTransactions.removeAll()
         for index in months.indices {
             _ = calculateMonthlyBalance(for: index)
         }
@@ -236,5 +244,14 @@ func addRecurringTransactions(to months: inout [Month], from allRecurringTransac
     // Итерация по месяцам начиная со второго
     for index in 1..<months.count {
         months[index].addRecurringTransactions(from: allRecurringTransactions)
+        print(index)
+        print("trans count" + " " + String(allRecurringTransactions.count))
+        print("/n")
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
     }
 }
