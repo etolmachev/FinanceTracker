@@ -3,7 +3,6 @@ import CoreData
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
-//    @FetchRequest(entity: Month.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Month.monthYear, ascending: true)]) var months: FetchedResults<Month>
     @FetchRequest(
         entity: Month.entity(),
         sortDescriptors: [
@@ -12,18 +11,17 @@ struct ContentView: View {
         ]
     ) var months: FetchedResults<Month>
 
-    @FetchRequest(entity: Loan.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Loan.name, ascending: true)]) var loans: FetchedResults<Loan>
 
     @State private var selectedMonthIndex = 0
     @State private var showingAddTransaction = false
     @State private var showingAddMonth = false
     @State private var showingIncomeDetails = false
     @State private var showingExpenseDetails = false
-    @State private var showingLoanList = false
     @State private var recurringTransactions: [Transaction] = []
     @State private var showingDeleteConfirmation = false
+    @State private var showingLoans = false
     @State private var selectedTransaction: Transaction?
-    @State private var nextMonthYear: MonthYear?
+    @State private var selectedMonthYear: MonthYear = MonthYear(month: 8, year: 2024) // Инициализация переменной
 
     private var currentMonth: Month? {
         guard !months.isEmpty, selectedMonthIndex < months.count else { return nil }
@@ -184,9 +182,9 @@ struct ContentView: View {
                             )
                         }
                     }
-                    
+
                     Button(action: {
-                        showingLoanList.toggle()
+                        showingLoans.toggle()
                     }) {
                         Text("Долги")
                             .frame(maxWidth: .infinity)
@@ -196,8 +194,8 @@ struct ContentView: View {
                             .cornerRadius(10)
                             .padding()
                     }
-                    .sheet(isPresented: $showingLoanList) {
-                        LoanListView().environment(\.managedObjectContext, viewContext)
+                    .sheet(isPresented: $showingLoans) {
+                        LoanListView(selectedMonthYear: $selectedMonthYear).environment(\.managedObjectContext, viewContext)
                     }
                 }
                 .navigationTitle("Финансовый обзор")
@@ -208,8 +206,9 @@ struct ContentView: View {
                         ForEach(months.indices, id: \.self) { index in
                             Button(action: {
                                 selectedMonthIndex = index
+                                selectedMonthYear = MonthYear(month: Int(months[index].monthYear?.split(separator: ".")[0] ?? "1") ?? 1, year: Int(months[index].monthYear?.split(separator: ".")[1] ?? "2024") ?? 2024)
                             }) {
-                                Text("\(months[index].month).\(months[index].year)")
+                                Text(months[index].monthYear ?? "")
                                     .padding()
                                     .background(selectedMonthIndex == index ? Color.blue : Color.gray.opacity(0.2))
                                     .foregroundColor(selectedMonthIndex == index ? .white : .black)
@@ -232,15 +231,14 @@ struct ContentView: View {
             }
         }
         .sheet(isPresented: $showingAddMonth) {
-            if let lastMonth = months.last {
+            if let lastMonthYear = months.last?.monthYear {
                 AddMonthView(
-                    lastMonthYear: MonthYear(month: Int(lastMonth.month), year: Int(lastMonth.year)),
+                    lastMonthYear: MonthYear(month: Int(lastMonthYear.split(separator: ".")[0])!, year: Int(lastMonthYear.split(separator: ".")[1])!),
                     onAddMonth: { newMonthYear in
                         let newMonth = Month(context: viewContext)
+                        
                         newMonth.id = UUID()
                         newMonth.monthYear = "\(newMonthYear.month).\(newMonthYear.year)"
-                        newMonth.month = Int16(newMonthYear.month)
-                        newMonth.year = Int16(newMonthYear.year)
                         newMonth.previousMonthBalance = 0
                         try? viewContext.save()
                         updateAllMonthlyBalances()
@@ -254,6 +252,8 @@ struct ContentView: View {
                 addInitialData()
             }
             updateAllMonthlyBalances()
+            // Очистка всех данных при запуске
+            //clearAllData()
         }
     }
 
@@ -291,8 +291,6 @@ struct ContentView: View {
         let initialMonth = Month(context: viewContext)
         initialMonth.id = UUID()
         initialMonth.monthYear = "8.2024"
-        initialMonth.month = 8
-        initialMonth.year = 2024
         initialMonth.previousMonthBalance = 0.0
 
         // Пример транзакции

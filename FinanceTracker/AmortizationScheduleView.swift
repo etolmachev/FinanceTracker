@@ -32,7 +32,7 @@ struct AmortizationScheduleView: View {
 
         for _ in 0..<Int(termInMonths) {
             let interestPayment = balance * monthlyRate
-            let principalPayment = loan.monthlyPayment - interestPayment
+            let principalPayment = loan.monthlyPayment// + interestPayment
             balance -= principalPayment
 
             let payment = Payment(date: paymentDate, principal: principalPayment, interest: interestPayment, totalPayment: loan.monthlyPayment)
