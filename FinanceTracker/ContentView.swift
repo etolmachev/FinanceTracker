@@ -3,6 +3,7 @@ import CoreData
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
+//    @FetchRequest(entity: Month.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Month.monthYear, ascending: true)]) var months: FetchedResults<Month>
     @FetchRequest(
         entity: Month.entity(),
         sortDescriptors: [
@@ -11,11 +12,14 @@ struct ContentView: View {
         ]
     ) var months: FetchedResults<Month>
 
+    @FetchRequest(entity: Loan.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Loan.name, ascending: true)]) var loans: FetchedResults<Loan>
+
     @State private var selectedMonthIndex = 0
     @State private var showingAddTransaction = false
     @State private var showingAddMonth = false
     @State private var showingIncomeDetails = false
     @State private var showingExpenseDetails = false
+    @State private var showingLoanList = false
     @State private var recurringTransactions: [Transaction] = []
     @State private var showingDeleteConfirmation = false
     @State private var selectedTransaction: Transaction?
@@ -180,6 +184,21 @@ struct ContentView: View {
                             )
                         }
                     }
+                    
+                    Button(action: {
+                        showingLoanList.toggle()
+                    }) {
+                        Text("Долги")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.orange)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                            .padding()
+                    }
+                    .sheet(isPresented: $showingLoanList) {
+                        LoanListView().environment(\.managedObjectContext, viewContext)
+                    }
                 }
                 .navigationTitle("Финансовый обзор")
                 .padding(.bottom, 60)
@@ -235,7 +254,6 @@ struct ContentView: View {
                 addInitialData()
             }
             updateAllMonthlyBalances()
-            //clearAllData()
         }
     }
 

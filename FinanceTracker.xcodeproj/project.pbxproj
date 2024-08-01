@@ -21,12 +21,20 @@
 		E88CBCB42C599FB700C9A4F8 /* Month+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCB02C599FB700C9A4F8 /* Month+CoreDataClass.swift */; };
 		E88CBCB52C599FB700C9A4F8 /* Month+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCB12C599FB700C9A4F8 /* Month+CoreDataProperties.swift */; };
 		E88CBCB72C59A5A200C9A4F8 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCB62C59A5A200C9A4F8 /* PersistenceController.swift */; };
+		E88CBCC12C5C200E00C9A4F8 /* LoanListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCC02C5C200E00C9A4F8 /* LoanListView.swift */; };
+		E88CBCC32C5C203A00C9A4F8 /* AddLoanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCC22C5C203A00C9A4F8 /* AddLoanView.swift */; };
+		E88CBCC52C5C204A00C9A4F8 /* LoanDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCC42C5C204A00C9A4F8 /* LoanDetailView.swift */; };
+		E88CBCC72C5C207E00C9A4F8 /* AddPrepaymentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCC62C5C207E00C9A4F8 /* AddPrepaymentView.swift */; };
+		E88CBCC92C5C208B00C9A4F8 /* AmortizationScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCC82C5C208B00C9A4F8 /* AmortizationScheduleView.swift */; };
+		E88CBCCB2C5C209700C9A4F8 /* PaymentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCCA2C5C209700C9A4F8 /* PaymentDetailView.swift */; };
+		E88CBCCD2C5C212200C9A4F8 /* EditLoanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCCC2C5C212200C9A4F8 /* EditLoanView.swift */; };
+		E88CBCD02C5C264900C9A4F8 /* Loan+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCCE2C5C264900C9A4F8 /* Loan+CoreDataClass.swift */; };
+		E88CBCD12C5C264900C9A4F8 /* Loan+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCCF2C5C264900C9A4F8 /* Loan+CoreDataProperties.swift */; };
 		E8BEE5942C57D60800589BDF /* IncomeDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BEE5932C57D60800589BDF /* IncomeDetailsView.swift */; };
 		E8BEE5962C57D61500589BDF /* ExpenseDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BEE5952C57D61500589BDF /* ExpenseDetailsView.swift */; };
 		E8BEE59A2C57DB1E00589BDF /* AddMonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BEE5992C57DB1E00589BDF /* AddMonthView.swift */; };
 		E8BEE59C2C57E2F900589BDF /* EditTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BEE59B2C57E2F900589BDF /* EditTransactionView.swift */; };
 		E8BEE5C52C59088900589BDF /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BEE5C22C59088900589BDF /* Asset.swift */; };
-		E8BEE5C72C59088900589BDF /* Loan.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BEE5C42C59088900589BDF /* Loan.swift */; };
 		E8BEE5D62C598CBB00589BDF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BEE5D52C598CBB00589BDF /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
@@ -67,12 +75,20 @@
 		E88CBCB02C599FB700C9A4F8 /* Month+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Month+CoreDataClass.swift"; path = "FinanceTracker/Month+CoreDataClass.swift"; sourceTree = "<group>"; };
 		E88CBCB12C599FB700C9A4F8 /* Month+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Month+CoreDataProperties.swift"; path = "FinanceTracker/Month+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		E88CBCB62C59A5A200C9A4F8 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
+		E88CBCC02C5C200E00C9A4F8 /* LoanListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanListView.swift; sourceTree = "<group>"; };
+		E88CBCC22C5C203A00C9A4F8 /* AddLoanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLoanView.swift; sourceTree = "<group>"; };
+		E88CBCC42C5C204A00C9A4F8 /* LoanDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanDetailView.swift; sourceTree = "<group>"; };
+		E88CBCC62C5C207E00C9A4F8 /* AddPrepaymentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPrepaymentView.swift; sourceTree = "<group>"; };
+		E88CBCC82C5C208B00C9A4F8 /* AmortizationScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmortizationScheduleView.swift; sourceTree = "<group>"; };
+		E88CBCCA2C5C209700C9A4F8 /* PaymentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentDetailView.swift; sourceTree = "<group>"; };
+		E88CBCCC2C5C212200C9A4F8 /* EditLoanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLoanView.swift; sourceTree = "<group>"; };
+		E88CBCCE2C5C264900C9A4F8 /* Loan+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Loan+CoreDataClass.swift"; path = "FinanceTracker/Loan+CoreDataClass.swift"; sourceTree = "<group>"; };
+		E88CBCCF2C5C264900C9A4F8 /* Loan+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Loan+CoreDataProperties.swift"; path = "FinanceTracker/Loan+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		E8BEE5932C57D60800589BDF /* IncomeDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeDetailsView.swift; sourceTree = "<group>"; };
 		E8BEE5952C57D61500589BDF /* ExpenseDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseDetailsView.swift; sourceTree = "<group>"; };
 		E8BEE5992C57DB1E00589BDF /* AddMonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMonthView.swift; sourceTree = "<group>"; };
 		E8BEE59B2C57E2F900589BDF /* EditTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTransactionView.swift; sourceTree = "<group>"; };
 		E8BEE5C22C59088900589BDF /* Asset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
-		E8BEE5C42C59088900589BDF /* Loan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loan.swift; sourceTree = "<group>"; };
 		E8BEE5CB2C598A3E00589BDF /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		E8BEE5D52C598CBB00589BDF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -105,6 +121,8 @@
 		E85DFF432C57BD6800EE4D63 = {
 			isa = PBXGroup;
 			children = (
+				E88CBCCE2C5C264900C9A4F8 /* Loan+CoreDataClass.swift */,
+				E88CBCCF2C5C264900C9A4F8 /* Loan+CoreDataProperties.swift */,
 				E88CBCAE2C599FB700C9A4F8 /* Transaction+CoreDataClass.swift */,
 				E88CBCAF2C599FB700C9A4F8 /* Transaction+CoreDataProperties.swift */,
 				E88CBCB02C599FB700C9A4F8 /* Month+CoreDataClass.swift */,
@@ -130,7 +148,6 @@
 			isa = PBXGroup;
 			children = (
 				E8BEE5C22C59088900589BDF /* Asset.swift */,
-				E8BEE5C42C59088900589BDF /* Loan.swift */,
 				E85DFF4F2C57BD6800EE4D63 /* FinanceTrackerApp.swift */,
 				E85DFF512C57BD6800EE4D63 /* ContentView.swift */,
 				E85DFF532C57BD6B00EE4D63 /* Assets.xcassets */,
@@ -141,11 +158,18 @@
 				E8BEE5952C57D61500589BDF /* ExpenseDetailsView.swift */,
 				E8BEE5992C57DB1E00589BDF /* AddMonthView.swift */,
 				E8BEE59B2C57E2F900589BDF /* EditTransactionView.swift */,
+				E88CBCC62C5C207E00C9A4F8 /* AddPrepaymentView.swift */,
+				E88CBCC82C5C208B00C9A4F8 /* AmortizationScheduleView.swift */,
+				E88CBCCA2C5C209700C9A4F8 /* PaymentDetailView.swift */,
 				E8BEE5CA2C598A3E00589BDF /* Model.xcdatamodeld */,
 				E8BEE5D52C598CBB00589BDF /* AppDelegate.swift */,
 				E88CBCA22C59933000C9A4F8 /* MonthYear.swift */,
 				E88CBCA42C5993AF00C9A4F8 /* TransactionType.swift */,
 				E88CBCB62C59A5A200C9A4F8 /* PersistenceController.swift */,
+				E88CBCC02C5C200E00C9A4F8 /* LoanListView.swift */,
+				E88CBCC22C5C203A00C9A4F8 /* AddLoanView.swift */,
+				E88CBCC42C5C204A00C9A4F8 /* LoanDetailView.swift */,
+				E88CBCCC2C5C212200C9A4F8 /* EditLoanView.swift */,
 			);
 			path = FinanceTracker;
 			sourceTree = "<group>";
@@ -307,18 +331,26 @@
 				E8BEE5C52C59088900589BDF /* Asset.swift in Sources */,
 				E88CBCA32C59933000C9A4F8 /* MonthYear.swift in Sources */,
 				E8BEE59C2C57E2F900589BDF /* EditTransactionView.swift in Sources */,
+				E88CBCC92C5C208B00C9A4F8 /* AmortizationScheduleView.swift in Sources */,
 				E8BEE5962C57D61500589BDF /* ExpenseDetailsView.swift in Sources */,
 				E85DFF522C57BD6800EE4D63 /* ContentView.swift in Sources */,
+				E88CBCD02C5C264900C9A4F8 /* Loan+CoreDataClass.swift in Sources */,
+				E88CBCD12C5C264900C9A4F8 /* Loan+CoreDataProperties.swift in Sources */,
+				E88CBCC12C5C200E00C9A4F8 /* LoanListView.swift in Sources */,
+				E88CBCC52C5C204A00C9A4F8 /* LoanDetailView.swift in Sources */,
+				E88CBCC72C5C207E00C9A4F8 /* AddPrepaymentView.swift in Sources */,
 				E85DFF502C57BD6800EE4D63 /* FinanceTrackerApp.swift in Sources */,
 				E88CBCA52C5993AF00C9A4F8 /* TransactionType.swift in Sources */,
 				E8BEE59A2C57DB1E00589BDF /* AddMonthView.swift in Sources */,
 				E88CBCB22C599FB700C9A4F8 /* Transaction+CoreDataClass.swift in Sources */,
 				E88CBCB32C599FB700C9A4F8 /* Transaction+CoreDataProperties.swift in Sources */,
+				E88CBCCB2C5C209700C9A4F8 /* PaymentDetailView.swift in Sources */,
 				E88CBCB72C59A5A200C9A4F8 /* PersistenceController.swift in Sources */,
 				E88CBCB42C599FB700C9A4F8 /* Month+CoreDataClass.swift in Sources */,
+				E88CBCCD2C5C212200C9A4F8 /* EditLoanView.swift in Sources */,
+				E88CBCC32C5C203A00C9A4F8 /* AddLoanView.swift in Sources */,
 				E88CBCB52C599FB700C9A4F8 /* Month+CoreDataProperties.swift in Sources */,
 				E8BEE5942C57D60800589BDF /* IncomeDetailsView.swift in Sources */,
-				E8BEE5C72C59088900589BDF /* Loan.swift in Sources */,
 				E85DFF852C57BE7500EE4D63 /* AddTransactionView.swift in Sources */,
 				E8BEE5D62C598CBB00589BDF /* AppDelegate.swift in Sources */,
 			);
