@@ -13,7 +13,9 @@ struct ContentView: View {
     @State private var recurringTransactions: [Transaction] = []
     @State private var showingDeleteConfirmation = false
     @State private var selectedTransaction: Transaction?
-    
+    @State private var nextMonthYear: MonthYear??
+    @State private var curMonthYear: MonthYear??
+
     private var currentMonth: Month? {
         guard !months.isEmpty, selectedMonthIndex < months.count else { return nil }
         return months[selectedMonthIndex]
@@ -38,169 +40,180 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            VStack {
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text("Доходы")
-                            .font(.headline)
-                            .padding()
-
-                        Text("\(totalIncome, specifier: "%.2f")")
-                            .font(.largeTitle)
-                            .padding()
-                    }
-                    .frame(width: 170, height: 150)
-                    .background(Color.green)
-                    .foregroundColor(.white)
-                    .cornerRadius(15)
-                    .onTapGesture {
-                        showingIncomeDetails.toggle()
-                    }
-                    .sheet(isPresented: $showingIncomeDetails) {
-                        if let currentMonth = currentMonth {
-                            IncomeDetailsView(transactions: .constant(currentMonth.transactionsArray.filter { $0.transactionType == .income }))
-                        }
-                    }.onDisappear(){
-                        updateAllMonthlyBalances()
-                    }
-
-                    Spacer()
-
-                    VStack(alignment: .leading) {
-                        Text("Расходы")
-                            .font(.headline)
-                            .padding()
-
-                        Text("\(totalExpenses, specifier: "%.2f")")
-                            .font(.largeTitle)
-                            .padding()
-                    }
-                    .frame(width: 170, height: 150)
-                    .background(Color.red)
-                    .foregroundColor(.white)
-                    .cornerRadius(15)
-                    .onTapGesture {
-                        showingExpenseDetails.toggle()
-                    }
-                    .sheet(isPresented: $showingExpenseDetails) {
-                        if let currentMonth = currentMonth {
-                            ExpenseDetailsView(transactions: .constant(currentMonth.transactionsArray.filter { $0.transactionType == .expense }))
-                        }
-                    }.onDisappear(){
-                        updateAllMonthlyBalances()
-                    }
-                }
-                .padding()
-
-                VStack(alignment: .leading) {
+            if months.isEmpty {
+                Text("Нет данных. Добавьте месяц.")
+            } else {
+                VStack {
                     HStack {
                         VStack(alignment: .leading) {
-                            Text("Остаток на начало месяца")
+                            Text("Доходы")
                                 .font(.headline)
-                            Text("\(previousMonthBalance, specifier: "%.2f")")
-                                .font(.title)
-                        }
-                        Spacer()
-                    }
+                                .padding()
 
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text("Остаток в этом месяце")
-                                .font(.headline)
-                            Text("\(monthlyBalance, specifier: "%.2f")")
+                            Text("\(totalIncome, specifier: "%.2f")")
                                 .font(.largeTitle)
+                                .padding()
                         }
-                        Spacer()
-                    }
-
-                }
-                .padding()
-
-                Button(action: {
-                    showingAddTransaction.toggle()
-                }) {
-                    Text("Добавить транзакцию")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue)
+                        .frame(width: 170, height: 150)
+                        .background(Color.green)
                         .foregroundColor(.white)
-                        .cornerRadius(10)
-                        .padding()
-                }
-                .sheet(isPresented: $showingAddTransaction) {
-                    if let currentMonth = currentMonth {
-                        AddTransactionView { transaction in
-                            currentMonth.addToTransactions(transaction)
-                            if transaction.isRecurring {
-                                recurringTransactions.append(transaction)
+                        .cornerRadius(15)
+                        .onTapGesture {
+                            showingIncomeDetails.toggle()
+                        }
+                        .sheet(isPresented: $showingIncomeDetails) {
+                            if let currentMonth = currentMonth {
+                                IncomeDetailsView(transactions: .constant(currentMonth.transactionsArray.filter { $0.transactionType == .income }))
+                            } else {
+                                EmptyView()
                             }
-                            try? viewContext.save()
+                        }.onDisappear(){
                             updateAllMonthlyBalances()
                         }
-                        .environment(\.managedObjectContext, viewContext) // Убедитесь, что передаете правильный контекст
-                    }
-                }
 
-                if months.count > 1 && selectedMonthIndex == months.count - 1 {
+                        Spacer()
+
+                        VStack(alignment: .leading) {
+                            Text("Расходы")
+                                .font(.headline)
+                                .padding()
+
+                            Text("\(totalExpenses, specifier: "%.2f")")
+                                .font(.largeTitle)
+                                .padding()
+                        }
+                        .frame(width: 170, height: 150)
+                        .background(Color.red)
+                        .foregroundColor(.white)
+                        .cornerRadius(15)
+                        .onTapGesture {
+                            showingExpenseDetails.toggle()
+                        }
+                        .sheet(isPresented: $showingExpenseDetails) {
+                            if let currentMonth = currentMonth {
+                                ExpenseDetailsView(transactions: .constant(currentMonth.transactionsArray.filter { $0.transactionType == .expense }))
+                            } else {
+                                EmptyView()
+                            }
+                        }.onDisappear(){
+                            updateAllMonthlyBalances()
+                        }
+                    }
+                    .padding()
+
+                    VStack(alignment: .leading) {
+                        HStack {
+                            VStack(alignment: .leading) {
+                                Text("Остаток на начало месяца")
+                                    .font(.headline)
+                                Text("\(previousMonthBalance, specifier: "%.2f")")
+                                    .font(.title)
+                            }
+                            Spacer()
+                        }
+
+                        HStack {
+                            VStack(alignment: .leading) {
+                                Text("Остаток в этом месяце")
+                                    .font(.headline)
+                                Text("\(monthlyBalance, specifier: "%.2f")")
+                                    .font(.largeTitle)
+                            }
+                            Spacer()
+                        }
+
+                    }
+                    .padding()
+
                     Button(action: {
-                        showingDeleteConfirmation.toggle()
+                        showingAddTransaction.toggle()
                     }) {
-                        Text("Удалить этот месяц")
+                        Text("Добавить транзакцию")
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Color.red)
+                            .background(Color.blue)
                             .foregroundColor(.white)
                             .cornerRadius(10)
                             .padding()
                     }
-                    .alert(isPresented: $showingDeleteConfirmation) {
-                        Alert(
-                            title: Text("Подтверждение удаления"),
-                            message: Text("Вы уверены, что хотите удалить этот месяц?"),
-                            primaryButton: .destructive(Text("Удалить")) {
-                                deleteCurrentMonth()
-                            },
-                            secondaryButton: .cancel()
-                        )
-                    }
-                }
-            }
-            .navigationTitle("Финансовый обзор")
-            .padding(.bottom, 60)
-
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
-                    ForEach(months.indices, id: \.self) { index in
-                        Button(action: {
-                            selectedMonthIndex = index
-                        }) {
-                            Text(months[index].monthYear ?? "")
-                                .padding()
-                                .background(selectedMonthIndex == index ? Color.blue : Color.gray.opacity(0.2))
-                                .foregroundColor(selectedMonthIndex == index ? .white : .black)
-                                .cornerRadius(10)
+                    .sheet(isPresented: $showingAddTransaction) {
+                        if let currentMonth = currentMonth {
+                            AddTransactionView { transaction in
+                                currentMonth.addToTransactions(transaction)
+                                if transaction.isRecurring {
+                                    recurringTransactions.append(transaction)
+                                }
+                                try? viewContext.save()
+                                updateAllMonthlyBalances()
+                            }
+                            .environment(\.managedObjectContext, viewContext)
+                        } else {
+                            EmptyView()
                         }
                     }
 
-                    Button(action: {
-                        showingAddMonth.toggle()
-                    }) {
-                        Text("+")
-                            .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
+                    if months.count > 1 && selectedMonthIndex == months.count - 1 {
+                        Button(action: {
+                            showingDeleteConfirmation.toggle()
+                        }) {
+                            Text("Удалить этот месяц")
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.red)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                                .padding()
+                        }
+                        .alert(isPresented: $showingDeleteConfirmation) {
+                            Alert(
+                                title: Text("Подтверждение удаления"),
+                                message: Text("Вы уверены, что хотите удалить этот месяц?"),
+                                primaryButton: .destructive(Text("Удалить")) {
+                                    deleteCurrentMonth()
+                                },
+                                secondaryButton: .cancel()
+                            )
+                        }
                     }
                 }
-                .padding()
+                .navigationTitle("Финансовый обзор")
+                .padding(.bottom, 60)
+
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack {
+                        ForEach(months.indices, id: \.self) { index in
+                            Button(action: {
+                                selectedMonthIndex = index
+                            }) {
+                                Text(months[index].monthYear ?? "")
+                                    .padding()
+                                    .background(selectedMonthIndex == index ? Color.blue : Color.gray.opacity(0.2))
+                                    .foregroundColor(selectedMonthIndex == index ? .white : .black)
+                                    .cornerRadius(10)
+                            }
+                        }
+
+                        Button(action: {
+                            showingAddMonth.toggle()
+                        }) {
+                            Text("+")
+                                .padding()
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(8)
+                        }
+                    }
+                    .padding()
+                }
             }
         }
         .sheet(isPresented: $showingAddMonth) {
             if let lastMonthYear = months.last?.monthYear {
                 AddMonthView(
-                    lastMonthYear: MonthYear(month: 1, year: 2024),  // Не забудьте изменить это на актуальные данные
+                    lastMonthYear: MonthYear(month: Int(lastMonthYear.split(separator: ".")[0])!, year: Int(lastMonthYear.split(separator: ".")[1])!),
                     onAddMonth: { newMonthYear in
                         let newMonth = Month(context: viewContext)
+                        
                         newMonth.id = UUID()
                         newMonth.monthYear = "\(newMonthYear.month).\(newMonthYear.year)"
                         newMonth.previousMonthBalance = 0
@@ -216,6 +229,8 @@ struct ContentView: View {
                 addInitialData()
             }
             updateAllMonthlyBalances()
+            // Очистка всех данных при запуске
+            //clearAllData()
         }
     }
 
@@ -252,7 +267,7 @@ struct ContentView: View {
     private func addInitialData() {
         let initialMonth = Month(context: viewContext)
         initialMonth.id = UUID()
-        initialMonth.monthYear = "08/2024"
+        initialMonth.monthYear = "8.2024"
         initialMonth.previousMonthBalance = 0.0
 
         // Пример транзакции
@@ -266,6 +281,16 @@ struct ContentView: View {
         initialMonth.addToTransactions(transaction)
 
         try? viewContext.save()
+    }
+
+    private func clearAllData() {
+        let fetchRequest1: NSFetchRequest<NSFetchRequestResult> = Month.fetchRequest()
+        let batchDeleteRequest1 = NSBatchDeleteRequest(fetchRequest: fetchRequest1)
+        try? viewContext.execute(batchDeleteRequest1)
+
+        let fetchRequest2: NSFetchRequest<NSFetchRequestResult> = Transaction.fetchRequest()
+        let batchDeleteRequest2 = NSBatchDeleteRequest(fetchRequest: fetchRequest2)
+        try? viewContext.execute(batchDeleteRequest2)
     }
 }
 
