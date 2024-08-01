@@ -5,6 +5,8 @@ struct LoanDetailView: View {
     @ObservedObject var loan: Loan
     @State private var showingEditLoan = false
     @State private var showingAmortizationSchedule = false
+    @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         Form {
@@ -27,6 +29,11 @@ struct LoanDetailView: View {
                 // логика закрытия кредита
             }
             .foregroundColor(.red)
+            
+            Button("Удалить кредит") {
+                deleteLoan()
+            }
+            .foregroundColor(.red)
         }
         .navigationTitle(loan.name ?? "")
         .navigationBarItems(trailing: Button("Редактировать") {
@@ -34,6 +41,16 @@ struct LoanDetailView: View {
         })
         .sheet(isPresented: $showingEditLoan) {
             EditLoanView(loan: loan)
+        }
+    }
+
+    private func deleteLoan() {
+        viewContext.delete(loan)
+        do {
+            try viewContext.save()
+            presentationMode.wrappedValue.dismiss()
+        } catch {
+            print("Error deleting loan: \(error.localizedDescription)")
         }
     }
 }
