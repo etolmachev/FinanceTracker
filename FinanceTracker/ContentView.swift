@@ -1,9 +1,10 @@
 import SwiftUI
+import CoreData
 
 struct ContentView: View {
-    @State private var months: [Month] = [Month(monthYear: MonthYear(month: 8, year: 2024), transactions: [
-        Transaction(type: .income, amount: 100.0, category: "зп", date: Date(), isRecurring: false)
-    ])]
+    @Environment(\.managedObjectContext) private var viewContext
+    @FetchRequest(entity: Month.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Month.monthYear, ascending: true)]) var months: FetchedResults<Month>
+
     @State private var selectedMonthIndex = 0
     @State private var showingAddTransaction = false
     @State private var showingAddMonth = false
@@ -11,43 +12,44 @@ struct ContentView: View {
     @State private var showingExpenseDetails = false
     @State private var recurringTransactions: [Transaction] = []
     @State private var showingDeleteConfirmation = false
-
-    private var currentMonth: Month {
-        months[selectedMonthIndex]
+    @State private var selectedTransaction: Transaction?
+    
+    private var currentMonth: Month? {
+        guard !months.isEmpty, selectedMonthIndex < months.count else { return nil }
+        return months[selectedMonthIndex]
     }
 
     private var totalIncome: Double {
-        currentMonth.transactions.filter { $0.type == .income }.reduce(0) { $0 + $1.amount }
+        currentMonth?.transactionsArray.filter { $0.transactionType == .income }.reduce(0) { $0 + $1.amount } ?? 0.0
     }
-    
+
     private var totalExpenses: Double {
-        currentMonth.transactions.filter { $0.type == .expense }.reduce(0) { $0 + $1.amount }
+        currentMonth?.transactionsArray.filter { $0.transactionType == .expense }.reduce(0) { $0 + $1.amount } ?? 0.0
     }
 
     private var monthlyBalance: Double {
-        calculateMonthlyBalance(for: selectedMonthIndex)
+        calculateMonthlyBalance(for: selectedMonthIndex, in: Array(months))
     }
 
     private var previousMonthBalance: Double {
         guard selectedMonthIndex > 0 else { return 0 }
-        return calculateMonthlyBalance(for: selectedMonthIndex - 1)
+        return calculateMonthlyBalance(for: selectedMonthIndex - 1, in: Array(months))
     }
 
     var body: some View {
         VStack {
-            // Main Content
             VStack {
                 HStack {
                     VStack(alignment: .leading) {
                         Text("Доходы")
                             .font(.headline)
                             .padding()
-                        
+
                         Text("\(totalIncome, specifier: "%.2f")")
                             .font(.largeTitle)
                             .padding()
                     }
-                    .frame(width: 170, height: 150) // Square size
+                    .frame(width: 170, height: 150)
                     .background(Color.green)
                     .foregroundColor(.white)
                     .cornerRadius(15)
@@ -55,23 +57,25 @@ struct ContentView: View {
                         showingIncomeDetails.toggle()
                     }
                     .sheet(isPresented: $showingIncomeDetails) {
-                        IncomeDetailsView(transactions: $months[selectedMonthIndex].transactions)
+                        if let currentMonth = currentMonth {
+                            IncomeDetailsView(transactions: .constant(currentMonth.transactionsArray.filter { $0.transactionType == .income }))
+                        }
                     }.onDisappear(){
                         updateAllMonthlyBalances()
                     }
-                    
+
                     Spacer()
-                    
+
                     VStack(alignment: .leading) {
                         Text("Расходы")
                             .font(.headline)
                             .padding()
-                        
+
                         Text("\(totalExpenses, specifier: "%.2f")")
                             .font(.largeTitle)
                             .padding()
                     }
-                    .frame(width: 170, height: 150) // Square size
+                    .frame(width: 170, height: 150)
                     .background(Color.red)
                     .foregroundColor(.white)
                     .cornerRadius(15)
@@ -79,7 +83,9 @@ struct ContentView: View {
                         showingExpenseDetails.toggle()
                     }
                     .sheet(isPresented: $showingExpenseDetails) {
-                        ExpenseDetailsView(transactions: $months[selectedMonthIndex].transactions)
+                        if let currentMonth = currentMonth {
+                            ExpenseDetailsView(transactions: .constant(currentMonth.transactionsArray.filter { $0.transactionType == .expense }))
+                        }
                     }.onDisappear(){
                         updateAllMonthlyBalances()
                     }
@@ -87,7 +93,7 @@ struct ContentView: View {
                 .padding()
 
                 VStack(alignment: .leading) {
-                    HStack{
+                    HStack {
                         VStack(alignment: .leading) {
                             Text("Остаток на начало месяца")
                                 .font(.headline)
@@ -97,8 +103,7 @@ struct ContentView: View {
                         Spacer()
                     }
 
-                    
-                    HStack{
+                    HStack {
                         VStack(alignment: .leading) {
                             Text("Остаток в этом месяце")
                                 .font(.headline)
@@ -107,10 +112,10 @@ struct ContentView: View {
                         }
                         Spacer()
                     }
-                    
+
                 }
                 .padding()
-                
+
                 Button(action: {
                     showingAddTransaction.toggle()
                 }) {
@@ -123,18 +128,20 @@ struct ContentView: View {
                         .padding()
                 }
                 .sheet(isPresented: $showingAddTransaction) {
-                    AddTransactionView { transaction in
-                        months[selectedMonthIndex].transactions.append(transaction)
-                        // Добавляем транзакцию в список повторяющихся, если это повторяющаяся транзакция
-                        if transaction.isRecurring {
-                            recurringTransactions.append(transaction)
-                            print("кол-во потор транзакций адейт" + " " + String(recurringTransactions.count))
+                    if let currentMonth = currentMonth {
+                        AddTransactionView { transaction in
+                            currentMonth.addToTransactions(transaction)
+                            if transaction.isRecurring {
+                                recurringTransactions.append(transaction)
+                            }
+                            try? viewContext.save()
+                            updateAllMonthlyBalances()
                         }
-                        updateAllMonthlyBalances()
+                        .environment(\.managedObjectContext, viewContext) // Убедитесь, что передаете правильный контекст
                     }
                 }
-                
-                if months.count > 1 && selectedMonthIndex == months.count-1 {
+
+                if months.count > 1 && selectedMonthIndex == months.count - 1 {
                     Button(action: {
                         showingDeleteConfirmation.toggle()
                     }) {
@@ -159,25 +166,22 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("Финансовый обзор")
-            .padding(.bottom, 60) // Add padding to avoid overlap with the month scroller
-            
-            // Horizontal Scroll for Months
+            .padding(.bottom, 60)
+
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     ForEach(months.indices, id: \.self) { index in
                         Button(action: {
                             selectedMonthIndex = index
                         }) {
-                            Text(String(months[index].monthYear.month) + "." + String(months[index].monthYear.year))
+                            Text(months[index].monthYear ?? "")
                                 .padding()
                                 .background(selectedMonthIndex == index ? Color.blue : Color.gray.opacity(0.2))
                                 .foregroundColor(selectedMonthIndex == index ? .white : .black)
                                 .cornerRadius(10)
                         }
                     }
-                    
 
-                    
                     Button(action: {
                         showingAddMonth.toggle()
                     }) {
@@ -193,77 +197,111 @@ struct ContentView: View {
         }
         .sheet(isPresented: $showingAddMonth) {
             if let lastMonthYear = months.last?.monthYear {
-                
                 AddMonthView(
-                    lastMonthYear: lastMonthYear,
+                    lastMonthYear: MonthYear(month: 1, year: 2024),  // Не забудьте изменить это на актуальные данные
                     onAddMonth: { newMonthYear in
-                        let newMonth = Month(monthYear: newMonthYear, transactions: [])
-                        months.append(newMonth)
-                        // Обновляем все месяцы с повторяющимися транзакциями
-                        //addRecurringTransactions(to: &months, from: recurringTransactions)
+                        let newMonth = Month(context: viewContext)
+                        newMonth.id = UUID()
+                        newMonth.monthYear = "\(newMonthYear.month).\(newMonthYear.year)"
+                        newMonth.previousMonthBalance = 0
+                        try? viewContext.save()
                         updateAllMonthlyBalances()
-                }, allRecurringTransactions: recurringTransactions)
+                    },
+                    allRecurringTransactions: recurringTransactions
+                )
             }
         }
         .onAppear {
+            if months.isEmpty {
+                addInitialData()
+            }
             updateAllMonthlyBalances()
         }
     }
 
     private func deleteCurrentMonth() {
         guard months.count > 1 else {
-            // Ensure that we always have at least one month
             return
         }
-        months.remove(at: selectedMonthIndex)
+        let monthToDelete = months[selectedMonthIndex]
+        viewContext.delete(monthToDelete)
+        try? viewContext.save()
         selectedMonthIndex = min(selectedMonthIndex, months.count - 1)
         updateAllMonthlyBalances()
     }
 
     private func updateAllMonthlyBalances() {
-        addRecurringTransactions(to: &months, from: recurringTransactions)
+        var mutableMonths = Array(months)
+        addRecurringTransactions(to: &mutableMonths, from: recurringTransactions)
         recurringTransactions.removeAll()
-        for index in months.indices {
-            _ = calculateMonthlyBalance(for: index)
+        for index in mutableMonths.indices {
+            _ = calculateMonthlyBalance(for: index, in: mutableMonths)
         }
     }
 
-    private func calculateMonthlyBalance(for index: Int) -> Double {
+    private func calculateMonthlyBalance(for index: Int, in months: [Month]) -> Double {
         guard index < months.count else { return 0 }
-        
-        let previousBalance = (index > 0) ? calculateMonthlyBalance(for: index - 1) : 0
-        
-        let currentBalance = months[index].transactions.reduce(0) { $0 + ($1.type == .income ? $1.amount : -$1.amount) }
-        
+
+        let previousBalance = (index > 0) ? calculateMonthlyBalance(for: index - 1, in: months) : 0
+
+        let currentBalance = months[index].transactionsArray.reduce(0) { $0 + ($1.transactionType == .income ? $1.amount : -$1.amount) }
+
         return currentBalance + previousBalance
     }
-}
 
-func getCurrentMonthYear() -> String {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "MMM yyyy"
-    return formatter.string(from: Date())
-}
+    private func addInitialData() {
+        let initialMonth = Month(context: viewContext)
+        initialMonth.id = UUID()
+        initialMonth.monthYear = "08/2024"
+        initialMonth.previousMonthBalance = 0.0
 
+        // Пример транзакции
+        let transaction = Transaction(context: viewContext)
+        transaction.id = UUID()
+        transaction.amount = 100.0
+        transaction.category = "Salary"
+        transaction.date = Date()
+        transaction.isRecurring = false
+        transaction.transactionType = .income
+        initialMonth.addToTransactions(transaction)
+
+        try? viewContext.save()
+    }
+}
 
 func addRecurringTransactions(to months: inout [Month], from allRecurringTransactions: [Transaction]) {
-    // Проверяем, есть ли в массиве months хотя бы два элемента
     guard months.count > 1 else {
-        print("Недостаточно месяцев для добавления повторяющихся транзакций.")
         return
     }
-    
-    // Итерация по месяцам начиная со второго
     for index in 1..<months.count {
         months[index].addRecurringTransactions(from: allRecurringTransactions)
-        print(index)
-        print("trans count" + " " + String(allRecurringTransactions.count))
-        print("/n")
+    }
+}
+
+extension Month {
+    var transactionsArray: [Transaction] {
+        let set = transactions as? Set<Transaction> ?? []
+        return set.sorted {
+            $0.date ?? Date() < $1.date ?? Date()
+        }
+    }
+
+    func addRecurringTransactions(from allRecurringTransactions: [Transaction]) {
+        for transaction in allRecurringTransactions {
+            let newTransaction = Transaction(context: self.managedObjectContext!)
+            newTransaction.id = UUID()
+            newTransaction.amount = transaction.amount
+            newTransaction.category = transaction.category
+            newTransaction.date = transaction.date
+            newTransaction.isRecurring = transaction.isRecurring
+            newTransaction.transactionType = transaction.transactionType
+            self.addToTransactions(newTransaction)
+        }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }

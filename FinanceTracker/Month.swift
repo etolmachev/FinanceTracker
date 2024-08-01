@@ -19,28 +19,8 @@ struct Month: Identifiable {
         return totalIncome - totalExpense + previousMonthBalance
     }
     
-//    init(monthYear: String, transactions: [Transaction] = []) {
-//        self.monthYear = monthYear
-//        self.transactions = transactions
-//    }
-    
     mutating func addRecurringTransactions(from recurringTransactions: [Transaction]) {
         let filteredTransactions = recurringTransactions.filter { $0.isRecurring }
-        print("Транзакций для добавления " + " " + String(recurringTransactions.count))
-        print("Транзакций для добавления filtered " + " " + String(filteredTransactions.count))
-        print("Транзакций до добавления " + " " + String(self.transactions.count))
-        self.transactions.append(contentsOf: filteredTransactions)
-        print("Транзакций после добавления " + " " + String(self.transactions.count))
-        print("\n")
-        
+        self.transactions.append(contentsOf: filteredTransactions)        
     }
 }
-
-
-//struct Month: Identifiable {
-//    var id = UUID()
-//    var monthYear: String
-//    var transactions: [Transaction] = []
-//
-//
-//}
