@@ -19,6 +19,8 @@ extension Month {
     @NSManaged public var id: UUID?
     @NSManaged public var monthYear: String?
     @NSManaged public var previousMonthBalance: Double
+    @NSManaged public var month: Int16
+    @NSManaged public var year: Int16
     @NSManaged public var transactions: NSSet?
 
 }

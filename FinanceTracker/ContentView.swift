@@ -3,7 +3,13 @@ import CoreData
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @FetchRequest(entity: Month.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Month.monthYear, ascending: true)]) var months: FetchedResults<Month>
+    @FetchRequest(
+        entity: Month.entity(),
+        sortDescriptors: [
+            NSSortDescriptor(keyPath: \Month.year, ascending: true),
+            NSSortDescriptor(keyPath: \Month.month, ascending: true)
+        ]
+    ) var months: FetchedResults<Month>
 
     @State private var selectedMonthIndex = 0
     @State private var showingAddTransaction = false
@@ -13,8 +19,7 @@ struct ContentView: View {
     @State private var recurringTransactions: [Transaction] = []
     @State private var showingDeleteConfirmation = false
     @State private var selectedTransaction: Transaction?
-    @State private var nextMonthYear: MonthYear??
-    @State private var curMonthYear: MonthYear??
+    @State private var nextMonthYear: MonthYear?
 
     private var currentMonth: Month? {
         guard !months.isEmpty, selectedMonthIndex < months.count else { return nil }
@@ -185,7 +190,7 @@ struct ContentView: View {
                             Button(action: {
                                 selectedMonthIndex = index
                             }) {
-                                Text(months[index].monthYear ?? "")
+                                Text("\(months[index].month).\(months[index].year)")
                                     .padding()
                                     .background(selectedMonthIndex == index ? Color.blue : Color.gray.opacity(0.2))
                                     .foregroundColor(selectedMonthIndex == index ? .white : .black)
@@ -208,14 +213,15 @@ struct ContentView: View {
             }
         }
         .sheet(isPresented: $showingAddMonth) {
-            if let lastMonthYear = months.last?.monthYear {
+            if let lastMonth = months.last {
                 AddMonthView(
-                    lastMonthYear: MonthYear(month: Int(lastMonthYear.split(separator: ".")[0])!, year: Int(lastMonthYear.split(separator: ".")[1])!),
+                    lastMonthYear: MonthYear(month: Int(lastMonth.month), year: Int(lastMonth.year)),
                     onAddMonth: { newMonthYear in
                         let newMonth = Month(context: viewContext)
-                        
                         newMonth.id = UUID()
                         newMonth.monthYear = "\(newMonthYear.month).\(newMonthYear.year)"
+                        newMonth.month = Int16(newMonthYear.month)
+                        newMonth.year = Int16(newMonthYear.year)
                         newMonth.previousMonthBalance = 0
                         try? viewContext.save()
                         updateAllMonthlyBalances()
@@ -229,7 +235,6 @@ struct ContentView: View {
                 addInitialData()
             }
             updateAllMonthlyBalances()
-            // Очистка всех данных при запуске
             //clearAllData()
         }
     }
@@ -268,6 +273,8 @@ struct ContentView: View {
         let initialMonth = Month(context: viewContext)
         initialMonth.id = UUID()
         initialMonth.monthYear = "8.2024"
+        initialMonth.month = 8
+        initialMonth.year = 2024
         initialMonth.previousMonthBalance = 0.0
 
         // Пример транзакции
