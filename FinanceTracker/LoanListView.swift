@@ -14,32 +14,44 @@ struct LoanListView: View {
 
     var body: some View {
         NavigationView {
-            List {
-                ForEach(loans) { loan in
-                    NavigationLink(destination: LoanDetailView(loan: loan)) {
+            VStack {
+                List {
+                    Section(header: Text("Долги")) {
+                        ForEach(loans) { loan in
+                            NavigationLink(destination: LoanDetailView(loan: loan)) {
+                                HStack {
+                                    Text(loan.name ?? "")
+                                    Spacer()
+                                    Text("\(calculateRemainingBalance(for: loan, asOf: selectedMonthYear), specifier: "%.2f")")
+                                }
+                            }
+                        }
+                        .onDelete { indexSet in
+                            for index in indexSet {
+                                let loan = loans[index]
+                                viewContext.delete(loan)
+                            }
+                            try? viewContext.save()
+                        }
+                    }
+                    
+                    Section(header: Text("Сумма остатков по долгам")) {
                         HStack {
-                            Text(loan.name ?? "")
+                            Text("Общая сумма:")
                             Spacer()
-                            Text("\(calculateRemainingBalance(for: loan, asOf: selectedMonthYear), specifier: "%.2f")")
+                            Text("\(calculateTotalRemainingBalance(), specifier: "%.2f")")
                         }
                     }
                 }
-                .onDelete { indexSet in
-                    for index in indexSet {
-                        let loan = loans[index]
-                        viewContext.delete(loan)
-                    }
-                    try? viewContext.save()
+                .navigationTitle("Долги")
+                .navigationBarItems(trailing: Button(action: {
+                    showingAddLoan.toggle()
+                }) {
+                    Image(systemName: "plus")
+                })
+                .sheet(isPresented: $showingAddLoan) {
+                    AddLoanView().environment(\.managedObjectContext, viewContext)
                 }
-            }
-            .navigationTitle("Долги")
-            .navigationBarItems(trailing: Button(action: {
-                showingAddLoan.toggle()
-            }) {
-                Image(systemName: "plus")
-            })
-            .sheet(isPresented: $showingAddLoan) {
-                AddLoanView().environment(\.managedObjectContext, viewContext)
             }
         }
     }
@@ -52,7 +64,7 @@ struct LoanListView: View {
         
         for _ in 0..<totalMonthsElapsed {
             let interestPayment = remainingBalance * interestRate
-            let principalPayment = monthlyPayment// + interestPayment
+            let principalPayment = monthlyPayment// - interestPayment
             remainingBalance -= principalPayment
         }
         
@@ -63,6 +75,10 @@ struct LoanListView: View {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.month], from: startDate, to: endDate)
         return components.month ?? 0
+    }
+
+    private func calculateTotalRemainingBalance() -> Double {
+        return loans.reduce(0) { $0 + calculateRemainingBalance(for: $1, asOf: selectedMonthYear) }
     }
 }
 
