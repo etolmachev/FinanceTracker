@@ -73,8 +73,17 @@ struct LoanListView: View {
 
     private func monthsBetween(startDate: Date, endDate: Date) -> Int {
         let calendar = Calendar.current
-        let components = calendar.dateComponents([.month], from: startDate, to: endDate)
-        return components.month ?? 0
+        
+//        let startmonth = calendar.dateComponents([.month], from: startDate)
+//        let endmonth = calendar.dateComponents([.month], from: endDate)
+//        let result = Int(endmonth.month ?? 0) - Int(startmonth.month ?? 0)
+        
+        let components = calendar.dateComponents([.day], from: startDate, to: endDate)
+//        print((components.day ?? 0)/30)
+//        print(result)
+        
+        return (components.day ?? 0)/30
+        //return result
     }
 
     private func calculateTotalRemainingBalance() -> Double {
