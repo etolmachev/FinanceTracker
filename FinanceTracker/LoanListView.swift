@@ -79,11 +79,8 @@ struct LoanListView: View {
 //        let result = Int(endmonth.month ?? 0) - Int(startmonth.month ?? 0)
         
         let components = calendar.dateComponents([.day], from: startDate, to: endDate)
-//        print((components.day ?? 0)/30)
-//        print(result)
         
         return (components.day ?? 0)/30
-        //return result
     }
 
     private func calculateTotalRemainingBalance() -> Double {

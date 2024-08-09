@@ -11,7 +11,7 @@ struct ContentView: View {
         ]
     ) var months: FetchedResults<Month>
 
-
+    @State private var sortedMonths: [Month] = []
     @State private var selectedMonthIndex = 0
     @State private var showingAddTransaction = false
     @State private var showingAddMonth = false
@@ -146,10 +146,14 @@ struct ContentView: View {
                     .sheet(isPresented: $showingAddTransaction) {
                         if let currentMonth = currentMonth {
                             AddTransactionView { transaction in
-                                currentMonth.addToTransactions(transaction)
-                                if transaction.isRecurring {
-                                    recurringTransactions.append(transaction)
+                                
+                                if !transaction.isRecurring {
+                                    currentMonth.addToTransactions(transaction)
                                 }
+                                
+//                                if transaction.isRecurring {
+//                                    recurringTransactions.append(transaction)
+//                                }
                                 try? viewContext.save()
                                 updateAllMonthlyBalances()
                             }
@@ -203,7 +207,7 @@ struct ContentView: View {
 
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
-                        ForEach(months.indices, id: \.self) { index in
+                        ForEach(sortedMonths.indices, id: \.self) { index in
                             Button(action: {
                                 selectedMonthIndex = index
                                 selectedMonthYear = MonthYear(month: Int(months[index].monthYear?.split(separator: ".")[0] ?? "1") ?? 1, year: Int(months[index].monthYear?.split(separator: ".")[1] ?? "2024") ?? 2024)
@@ -218,6 +222,7 @@ struct ContentView: View {
 
                         Button(action: {
                             showingAddMonth.toggle()
+                            updateSortedMonths()
                         }) {
                             Text("+")
                                 .padding()
@@ -231,7 +236,7 @@ struct ContentView: View {
             }
         }
         .sheet(isPresented: $showingAddMonth) {
-            if let lastMonthYear = months.last?.monthYear {
+            if let lastMonthYear = sortedMonths.last?.monthYear {
                 AddMonthView(
                     lastMonthYear: MonthYear(month: Int(lastMonthYear.split(separator: ".")[0])!, year: Int(lastMonthYear.split(separator: ".")[1])!),
                     onAddMonth: { newMonthYear in
@@ -239,9 +244,23 @@ struct ContentView: View {
                         
                         newMonth.id = UUID()
                         newMonth.monthYear = "\(newMonthYear.month).\(newMonthYear.year)"
+                        newMonth.month = Int32(newMonthYear.month)
+                        newMonth.year = Int32(newMonthYear.year)
                         newMonth.previousMonthBalance = 0
-                        try? viewContext.save()
+                        
+//                        let calendar = Calendar.current
+//                        let startDateComponents = calendar.dateComponents([.year, .month], from: sortedMonths.last!.startDate!)
+//                        let endDateComponents = calendar.dateComponents([.year, .month], from: sortedMonths.last!.endDate!)
+                        
+                        newMonth.startDate = Calendar.current.date(byAdding: .month, value: 1, to: sortedMonths.last!.startDate!)!
+                        newMonth.endDate = Calendar.current.date(byAdding: .month, value: 1, to: newMonth.startDate!)!
+                        addRecurringTransactions(to: newMonth)
                         updateAllMonthlyBalances()
+
+                        try? viewContext.save()
+
+                        updateSortedMonths()
+
                     },
                     allRecurringTransactions: recurringTransactions
                 )
@@ -252,8 +271,9 @@ struct ContentView: View {
                 addInitialData()
             }
             updateAllMonthlyBalances()
+            updateSortedMonths()
             // Очистка всех данных при запуске
-            //clearAllData()
+//            clearAllData()
         }
     }
 
@@ -269,11 +289,12 @@ struct ContentView: View {
     }
 
     private func updateAllMonthlyBalances() {
-        var mutableMonths = Array(months)
-        addRecurringTransactions(to: &mutableMonths, from: recurringTransactions)
+        for month in months {
+            addRecurringTransactions(to: month)
+        }
         recurringTransactions.removeAll()
-        for index in mutableMonths.indices {
-            _ = calculateMonthlyBalance(for: index, in: mutableMonths)
+        for index in months.indices {
+            _ = calculateMonthlyBalance(for: index, in: Array(months))
         }
     }
 
@@ -291,7 +312,11 @@ struct ContentView: View {
         let initialMonth = Month(context: viewContext)
         initialMonth.id = UUID()
         initialMonth.monthYear = "8.2024"
+        initialMonth.month = 8
+        initialMonth.year = 2024
         initialMonth.previousMonthBalance = 0.0
+        initialMonth.startDate = Calendar.current.date(from: DateComponents(year: 2024, month: 8))!
+        initialMonth.endDate = Calendar.current.date(byAdding: .month, value: 1, to: initialMonth.startDate!)!
 
         // Пример транзакции
         let transaction = Transaction(context: viewContext)
@@ -307,6 +332,7 @@ struct ContentView: View {
     }
 
     private func clearAllData() {
+        print("ПРОИЗОШЛА ПОЛНАЯ ОЧИСТКА ТРАНЩАКЦИЙ И МЕСЯЦЕВ")
         let fetchRequest1: NSFetchRequest<NSFetchRequestResult> = Month.fetchRequest()
         let batchDeleteRequest1 = NSBatchDeleteRequest(fetchRequest: fetchRequest1)
         try? viewContext.execute(batchDeleteRequest1)
@@ -315,16 +341,94 @@ struct ContentView: View {
         let batchDeleteRequest2 = NSBatchDeleteRequest(fetchRequest: fetchRequest2)
         try? viewContext.execute(batchDeleteRequest2)
     }
+    
+    private func updateSortedMonths() {
+        print("called months sort ")
+        sortedMonths = months.sorted {
+            let components1 = $0.monthYear?.split(separator: ".").compactMap { Int($0) }
+            let components2 = $1.monthYear?.split(separator: ".").compactMap { Int($0) }
+            guard let year1 = components1?.last, let month1 = components1?.first,
+                  let year2 = components2?.last, let month2 = components2?.first else { return false }
+            if year1 == year2 {
+                return month1 < month2
+            } else {
+                return year1 < year2
+            }
+        }
+        print(sortedMonths)
+    }
+    
+    func addRecurringTransactions(to month: Month) {
+        //let viewContext = container.viewContext
+        let fetchRequest: NSFetchRequest<Transaction> = Transaction.fetchRequest()
+        //fetchRequest.predicate = NSPredicate(format: "isRecurring == YES AND startDate >= %@ AND endDate <= %@", month.startDate! as NSDate, month.endDate! as NSDate)
+//        print(month.startDate)
+//        print(month.endDate)
+        do {
+            let transactions = try viewContext.fetch(fetchRequest)
+            
+            print("recurring Transactions found " + String(transactions.filter{$0.isRecurring == true}.count))
+            
+            for transaction in transactions.filter{$0.isRecurring == true} {
+                print(transaction.startDate)
+                print(transaction.endDate)
+                print("\n")
+
+                if(transaction.startDate != nil && transaction.endDate != nil){ // заменить на isRecurring?
+                    //if(month.startDate! >= transaction.startDate! && month.endDate! <= transaction.endDate!){
+                    print(month.month)
+                    print(month.year)
+                    print(transaction.amount)
+                    print(isMonthBetweenDates(month: Int(month.month), year: Int(month.year), startDate: transaction.startDate, endDate: transaction.endDate))
+                    print("\n")
+                    
+                    if(isMonthBetweenDates(month: Int(month.month), year: Int(month.year), startDate: transaction.startDate, endDate: transaction.endDate)){
+                        //if(transaction.startDate! >= month.startDate! && transaction.endDate! <= month.endDate!){
+//                        if(!month.transactions?.contains(where: { transaction in
+//                            transaction.id == transaction.id})){
+                        if let monthTransactions = month.transactions?.allObjects as? [Transaction] {
+                            print("ids in month")
+                            for trans in monthTransactions {
+                                print(trans.id)
+                            }
+                            print("id to add")
+                            print(transaction.id)
+                            print("\n")
+                            if !monthTransactions.contains(where: { $0.id == transaction.id }) || monthTransactions.count == 0 {
+                                print("добавляю")
+                                print("\n")
+
+                                let newTransaction = Transaction(context: viewContext)
+                                newTransaction.id = transaction.id
+                                newTransaction.amount = transaction.amount
+                                newTransaction.category = transaction.category
+                                newTransaction.date = month.startDate! // или установить соответствующую дату в пределах месяца
+                                newTransaction.isRecurring = transaction.isRecurring
+                                newTransaction.transactionType = transaction.transactionType
+                                newTransaction.endDate = transaction.endDate
+                                
+                                month.addToTransactions(newTransaction)
+                            }
+                        }
+                        
+                    }
+                }
+            }
+            try viewContext.save()
+        } catch {
+            fatalError("Failed to fetch recurring transactions: \(error)")
+        }
+    }
 }
 
-func addRecurringTransactions(to months: inout [Month], from allRecurringTransactions: [Transaction]) {
-    guard months.count > 1 else {
-        return
-    }
-    for index in 1..<months.count {
-        months[index].addRecurringTransactions(from: allRecurringTransactions)
-    }
-}
+//func addRecurringTransactions(to months: inout [Month], from allRecurringTransactions: [Transaction]) {
+//    guard months.count > 1 else {
+//        return
+//    }
+//    for index in 1..<months.count {
+//        months[index].addRecurringTransactions(from: allRecurringTransactions)
+//    }
+//}
 
 extension Month {
     var transactionsArray: [Transaction] {
@@ -334,22 +438,43 @@ extension Month {
         }
     }
 
-    func addRecurringTransactions(from allRecurringTransactions: [Transaction]) {
-        for transaction in allRecurringTransactions {
-            let newTransaction = Transaction(context: self.managedObjectContext!)
-            newTransaction.id = UUID()
-            newTransaction.amount = transaction.amount
-            newTransaction.category = transaction.category
-            newTransaction.date = transaction.date
-            newTransaction.isRecurring = transaction.isRecurring
-            newTransaction.transactionType = transaction.transactionType
-            self.addToTransactions(newTransaction)
-        }
-    }
+//    func addRecurringTransactions(from allRecurringTransactions: [Transaction]) {
+//        for transaction in allRecurringTransactions {
+//            let newTransaction = Transaction(context: self.managedObjectContext!)
+//            newTransaction.id = UUID()
+//            newTransaction.amount = transaction.amount
+//            newTransaction.category = transaction.category
+//            newTransaction.date = transaction.date
+//            newTransaction.isRecurring = transaction.isRecurring
+//            newTransaction.transactionType = transaction.transactionType
+//            self.addToTransactions(newTransaction)
+//        }
+//    }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    }
+}
+
+func isMonthBetweenDates(month: Int, year: Int, startDate: Date?, endDate: Date?) -> Bool {
+    guard let startDate = startDate, let endDate = endDate else {
+        return false
+    }
+    
+    let calendar = Calendar.current
+    let startMonth = calendar.component(.month, from: startDate)
+    let endMonth = calendar.component(.month, from: endDate)
+    let startYear = calendar.component(.year, from: startDate)
+    let endYear = calendar.component(.year, from: endDate)
+    
+    print ("год окончания транзакции " + String(endYear))
+    // Проверка, что месяц находится между стартовым и конечным месяцами
+    if(year < endYear){
+        return true
+    }
+    else{
+        return month >= startMonth && month <= endMonth
     }
 }

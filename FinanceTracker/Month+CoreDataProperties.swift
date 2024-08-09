@@ -2,7 +2,7 @@
 //  Month+CoreDataProperties.swift
 //  FinanceTracker
 //
-//  Created by Egor Tolmachev on 31.07.2024.
+//  Created by Egor Tolmachev on 05.08.2024.
 //
 //
 
@@ -19,8 +19,10 @@ extension Month {
     @NSManaged public var id: UUID?
     @NSManaged public var monthYear: String?
     @NSManaged public var previousMonthBalance: Double
-    @NSManaged public var month: Int16
-    @NSManaged public var year: Int16
+    @NSManaged public var month: Int32
+    @NSManaged public var year: Int32
+    @NSManaged public var startDate: Date?
+    @NSManaged public var endDate: Date?
     @NSManaged public var transactions: NSSet?
 
 }

@@ -28,7 +28,7 @@ struct FinanceTrackerApp: App {
         if let count = try? context.count(for: fetchRequest), count == 0 {
             // Нет данных - создайте начальные данные
             let month = Month(context: context)
-            month.monthYear = "08/2024"
+            month.monthYear = "8.2024"
             month.previousMonthBalance = 0.0
             try? context.save()
         }

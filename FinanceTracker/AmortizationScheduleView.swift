@@ -22,7 +22,7 @@ struct AmortizationScheduleView: View {
         let principal = loan.remainingAmount
         let annualRate = loan.interestRate / 100
         let monthlyRate = annualRate / 12
-        let termInMonths = Double(loan.termInMonths)
+        let termInMonths = loan.termInMonths
 
         var balance = principal
         var schedule: [Payment] = []

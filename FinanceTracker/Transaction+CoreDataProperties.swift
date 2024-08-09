@@ -2,7 +2,7 @@
 //  Transaction+CoreDataProperties.swift
 //  FinanceTracker
 //
-//  Created by Egor Tolmachev on 31.07.2024.
+//  Created by Egor Tolmachev on 05.08.2024.
 //
 //
 
@@ -22,6 +22,8 @@ extension Transaction {
     @NSManaged public var id: UUID?
     @NSManaged public var isRecurring: Bool
     @NSManaged public var type: String?
+    @NSManaged public var startDate: Date?
+    @NSManaged public var endDate: Date?
     @NSManaged public var month: Month?
 
 }

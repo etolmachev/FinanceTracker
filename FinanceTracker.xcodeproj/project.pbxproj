@@ -16,10 +16,6 @@
 		E88CBCA12C598F2300C9A4F8 /* Model.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = E8BEE5CA2C598A3E00589BDF /* Model.xcdatamodeld */; };
 		E88CBCA32C59933000C9A4F8 /* MonthYear.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCA22C59933000C9A4F8 /* MonthYear.swift */; };
 		E88CBCA52C5993AF00C9A4F8 /* TransactionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCA42C5993AF00C9A4F8 /* TransactionType.swift */; };
-		E88CBCB22C599FB700C9A4F8 /* Transaction+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCAE2C599FB700C9A4F8 /* Transaction+CoreDataClass.swift */; };
-		E88CBCB32C599FB700C9A4F8 /* Transaction+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCAF2C599FB700C9A4F8 /* Transaction+CoreDataProperties.swift */; };
-		E88CBCB42C599FB700C9A4F8 /* Month+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCB02C599FB700C9A4F8 /* Month+CoreDataClass.swift */; };
-		E88CBCB52C599FB700C9A4F8 /* Month+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCB12C599FB700C9A4F8 /* Month+CoreDataProperties.swift */; };
 		E88CBCB72C59A5A200C9A4F8 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCB62C59A5A200C9A4F8 /* PersistenceController.swift */; };
 		E88CBCC12C5C200E00C9A4F8 /* LoanListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCC02C5C200E00C9A4F8 /* LoanListView.swift */; };
 		E88CBCC32C5C203A00C9A4F8 /* AddLoanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCC22C5C203A00C9A4F8 /* AddLoanView.swift */; };
@@ -30,6 +26,10 @@
 		E88CBCCD2C5C212200C9A4F8 /* EditLoanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCCC2C5C212200C9A4F8 /* EditLoanView.swift */; };
 		E88CBCD02C5C264900C9A4F8 /* Loan+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCCE2C5C264900C9A4F8 /* Loan+CoreDataClass.swift */; };
 		E88CBCD12C5C264900C9A4F8 /* Loan+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCCF2C5C264900C9A4F8 /* Loan+CoreDataProperties.swift */; };
+		E88CBCD42C60C19600C9A4F8 /* Transaction+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCD22C60C19600C9A4F8 /* Transaction+CoreDataClass.swift */; };
+		E88CBCD52C60C19600C9A4F8 /* Transaction+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCD32C60C19600C9A4F8 /* Transaction+CoreDataProperties.swift */; };
+		E88CBCDC2C61041000C9A4F8 /* Month+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCDA2C61041000C9A4F8 /* Month+CoreDataClass.swift */; };
+		E88CBCDD2C61041000C9A4F8 /* Month+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88CBCDB2C61041000C9A4F8 /* Month+CoreDataProperties.swift */; };
 		E8BEE5942C57D60800589BDF /* IncomeDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BEE5932C57D60800589BDF /* IncomeDetailsView.swift */; };
 		E8BEE5962C57D61500589BDF /* ExpenseDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BEE5952C57D61500589BDF /* ExpenseDetailsView.swift */; };
 		E8BEE59A2C57DB1E00589BDF /* AddMonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BEE5992C57DB1E00589BDF /* AddMonthView.swift */; };
@@ -70,10 +70,6 @@
 		E85DFF842C57BE7500EE4D63 /* AddTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTransactionView.swift; sourceTree = "<group>"; };
 		E88CBCA22C59933000C9A4F8 /* MonthYear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthYear.swift; sourceTree = "<group>"; };
 		E88CBCA42C5993AF00C9A4F8 /* TransactionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionType.swift; sourceTree = "<group>"; };
-		E88CBCAE2C599FB700C9A4F8 /* Transaction+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Transaction+CoreDataClass.swift"; path = "FinanceTracker/Transaction+CoreDataClass.swift"; sourceTree = "<group>"; };
-		E88CBCAF2C599FB700C9A4F8 /* Transaction+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Transaction+CoreDataProperties.swift"; path = "FinanceTracker/Transaction+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		E88CBCB02C599FB700C9A4F8 /* Month+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Month+CoreDataClass.swift"; path = "FinanceTracker/Month+CoreDataClass.swift"; sourceTree = "<group>"; };
-		E88CBCB12C599FB700C9A4F8 /* Month+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Month+CoreDataProperties.swift"; path = "FinanceTracker/Month+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		E88CBCB62C59A5A200C9A4F8 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		E88CBCC02C5C200E00C9A4F8 /* LoanListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanListView.swift; sourceTree = "<group>"; };
 		E88CBCC22C5C203A00C9A4F8 /* AddLoanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLoanView.swift; sourceTree = "<group>"; };
@@ -84,6 +80,10 @@
 		E88CBCCC2C5C212200C9A4F8 /* EditLoanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLoanView.swift; sourceTree = "<group>"; };
 		E88CBCCE2C5C264900C9A4F8 /* Loan+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Loan+CoreDataClass.swift"; path = "FinanceTracker/Loan+CoreDataClass.swift"; sourceTree = "<group>"; };
 		E88CBCCF2C5C264900C9A4F8 /* Loan+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Loan+CoreDataProperties.swift"; path = "FinanceTracker/Loan+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		E88CBCD22C60C19600C9A4F8 /* Transaction+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Transaction+CoreDataClass.swift"; path = "FinanceTracker/Transaction+CoreDataClass.swift"; sourceTree = "<group>"; };
+		E88CBCD32C60C19600C9A4F8 /* Transaction+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Transaction+CoreDataProperties.swift"; path = "FinanceTracker/Transaction+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		E88CBCDA2C61041000C9A4F8 /* Month+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Month+CoreDataClass.swift"; path = "FinanceTracker/Month+CoreDataClass.swift"; sourceTree = "<group>"; };
+		E88CBCDB2C61041000C9A4F8 /* Month+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Month+CoreDataProperties.swift"; path = "FinanceTracker/Month+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		E8BEE5932C57D60800589BDF /* IncomeDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeDetailsView.swift; sourceTree = "<group>"; };
 		E8BEE5952C57D61500589BDF /* ExpenseDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseDetailsView.swift; sourceTree = "<group>"; };
 		E8BEE5992C57DB1E00589BDF /* AddMonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMonthView.swift; sourceTree = "<group>"; };
@@ -121,12 +121,12 @@
 		E85DFF432C57BD6800EE4D63 = {
 			isa = PBXGroup;
 			children = (
+				E88CBCDA2C61041000C9A4F8 /* Month+CoreDataClass.swift */,
+				E88CBCDB2C61041000C9A4F8 /* Month+CoreDataProperties.swift */,
+				E88CBCD22C60C19600C9A4F8 /* Transaction+CoreDataClass.swift */,
+				E88CBCD32C60C19600C9A4F8 /* Transaction+CoreDataProperties.swift */,
 				E88CBCCE2C5C264900C9A4F8 /* Loan+CoreDataClass.swift */,
 				E88CBCCF2C5C264900C9A4F8 /* Loan+CoreDataProperties.swift */,
-				E88CBCAE2C599FB700C9A4F8 /* Transaction+CoreDataClass.swift */,
-				E88CBCAF2C599FB700C9A4F8 /* Transaction+CoreDataProperties.swift */,
-				E88CBCB02C599FB700C9A4F8 /* Month+CoreDataClass.swift */,
-				E88CBCB12C599FB700C9A4F8 /* Month+CoreDataProperties.swift */,
 				E85DFF4E2C57BD6800EE4D63 /* FinanceTracker */,
 				E85DFF642C57BD6B00EE4D63 /* FinanceTrackerTests */,
 				E85DFF6E2C57BD6B00EE4D63 /* FinanceTrackerUITests */,
@@ -340,16 +340,16 @@
 				E88CBCC52C5C204A00C9A4F8 /* LoanDetailView.swift in Sources */,
 				E88CBCC72C5C207E00C9A4F8 /* AddPrepaymentView.swift in Sources */,
 				E85DFF502C57BD6800EE4D63 /* FinanceTrackerApp.swift in Sources */,
+				E88CBCD42C60C19600C9A4F8 /* Transaction+CoreDataClass.swift in Sources */,
+				E88CBCD52C60C19600C9A4F8 /* Transaction+CoreDataProperties.swift in Sources */,
 				E88CBCA52C5993AF00C9A4F8 /* TransactionType.swift in Sources */,
 				E8BEE59A2C57DB1E00589BDF /* AddMonthView.swift in Sources */,
-				E88CBCB22C599FB700C9A4F8 /* Transaction+CoreDataClass.swift in Sources */,
-				E88CBCB32C599FB700C9A4F8 /* Transaction+CoreDataProperties.swift in Sources */,
+				E88CBCDC2C61041000C9A4F8 /* Month+CoreDataClass.swift in Sources */,
+				E88CBCDD2C61041000C9A4F8 /* Month+CoreDataProperties.swift in Sources */,
 				E88CBCCB2C5C209700C9A4F8 /* PaymentDetailView.swift in Sources */,
 				E88CBCB72C59A5A200C9A4F8 /* PersistenceController.swift in Sources */,
-				E88CBCB42C599FB700C9A4F8 /* Month+CoreDataClass.swift in Sources */,
 				E88CBCCD2C5C212200C9A4F8 /* EditLoanView.swift in Sources */,
 				E88CBCC32C5C203A00C9A4F8 /* AddLoanView.swift in Sources */,
-				E88CBCB52C599FB700C9A4F8 /* Month+CoreDataProperties.swift in Sources */,
 				E8BEE5942C57D60800589BDF /* IncomeDetailsView.swift in Sources */,
 				E85DFF852C57BE7500EE4D63 /* AddTransactionView.swift in Sources */,
 				E8BEE5D62C598CBB00589BDF /* AppDelegate.swift in Sources */,

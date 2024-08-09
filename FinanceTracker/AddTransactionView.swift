@@ -1,49 +1,52 @@
 import SwiftUI
-import CoreData
 
 struct AddTransactionView: View {
-    @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.presentationMode) var presentationMode
-
-    @State private var amount: Double = 0.0
+    @Environment(\.managedObjectContext) private var viewContext
+    
+    @State private var type: TransactionType = .expense
+    @State private var amount: String = ""
     @State private var category: String = ""
     @State private var date: Date = Date()
     @State private var isRecurring: Bool = false
-    @State private var transactionType: String = "expense" // или "income"
-
-    var onAddTransaction: (Transaction) -> Void
+    @State private var endDate: Date = Date()
+    
+    var onSave: ((Transaction) -> Void)?
 
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Детали транзакции")) {
-                    TextField("Категория", text: $category)
-                    TextField("Сумма", value: $amount, formatter: NumberFormatter())
-                    DatePicker("Дата", selection: $date, displayedComponents: .date)
-                    Toggle("Повторяющаяся", isOn: $isRecurring)
-                    Picker("Тип транзакции", selection: $transactionType) {
-                        Text("Доход").tag("income")
-                        Text("Расход").tag("expense")
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
+                Picker("Тип", selection: $type) {
+                    Text("Расход").tag(TransactionType.expense)
+                    Text("Доход").tag(TransactionType.income)
+                }
+                TextField("Сумма", text: $amount)
+                    .keyboardType(.decimalPad)
+                TextField("Категория", text: $category)
+                DatePicker("Дата", selection: $date, displayedComponents: .date)
+                Toggle("Повторяющаяся", isOn: $isRecurring)
+                if isRecurring {
+                    DatePicker("Дата окончания", selection: $endDate, displayedComponents: .date)
                 }
             }
-            .navigationBarTitle("Добавить транзакцию")
+            .navigationTitle("Добавить транзакцию")
             .navigationBarItems(trailing: Button("Сохранить") {
-                let newTransaction = Transaction(context: viewContext)
-                newTransaction.id = UUID()
-                newTransaction.amount = amount
-                newTransaction.category = category
-                newTransaction.date = date
-                newTransaction.isRecurring = isRecurring
-                newTransaction.transactionType = TransactionType(rawValue: transactionType) ?? .expense
-                onAddTransaction(newTransaction)
-                do {
-                    try viewContext.save()
-                } catch {
-                    print("Ошибка при сохранении транзакции: \(error)")
+                if let amount = Double(amount) {
+                    let transaction = Transaction(context: viewContext)
+                    transaction.id = UUID()
+                    transaction.type = type.rawValue
+                    transaction.amount = amount
+                    transaction.category = category
+                    transaction.date = date
+                    transaction.startDate = date
+                    transaction.isRecurring = isRecurring
+                    if isRecurring {
+                        transaction.endDate = endDate
+                    }
+                    onSave?(transaction)
+                    try? viewContext.save()
+                    presentationMode.wrappedValue.dismiss()
                 }
-                presentationMode.wrappedValue.dismiss()
             })
         }
     }
@@ -51,7 +54,7 @@ struct AddTransactionView: View {
 
 struct AddTransactionView_Previews: PreviewProvider {
     static var previews: some View {
-        AddTransactionView { _ in }
+        AddTransactionView()
             .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }
